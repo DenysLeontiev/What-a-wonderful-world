@@ -13,6 +13,9 @@ public class SelectionManager : MonoBehaviour
 
     [SerializeField] private float maxDistanceRay = 3f;
 
+    private Inventory inventory;
+    
+
     private void Awake()
     {
         if(Instance != null && Instance == this)
@@ -38,24 +41,31 @@ public class SelectionManager : MonoBehaviour
         {
             var selectionTransform = hit.transform;
 
-            if (selectionTransform.TryGetComponent<InteractableObject>(out InteractableObject interactableObject))
+            if(selectionTransform.TryGetComponent<ItemWorld>(out ItemWorld itemWorld))
             {
-                interactionText.text = interactableObject.GetItemName();
+                interactionText.text = itemWorld.Item.itemName;
+                interactionUI.SetActive(true);
+
                 if(Input.GetKeyDown(KeyCode.E))
                 {
-                    Debug.Log("hERE");
-                    Destroy(interactableObject.transform.gameObject);
+                    inventory.AddItem(itemWorld.GetItem());
+                    itemWorld.DestroySelf();
                 }
-                interactionUI.SetActive(true);
             }
             else
             {
                 interactionUI.SetActive(false);
             }
+
         }
         else
         {
             interactionUI.SetActive(false);
         }
+    }
+
+    public void SetInventory(Inventory inventory)
+    {
+        this.inventory = inventory;
     }
 }

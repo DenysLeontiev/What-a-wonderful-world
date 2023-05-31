@@ -11,17 +11,26 @@ public class MouseMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
+    {
+        if(InventoryHandler.Instance.IsInventoryOpened)
+        {
+            return;
+        }
+        MouseMovementHandler();
+    }
+
+    private void MouseMovementHandler()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensivity * Time.deltaTime;
 
         xRotation -= mouseY;
 
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); 
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         yRotation += mouseX;
 

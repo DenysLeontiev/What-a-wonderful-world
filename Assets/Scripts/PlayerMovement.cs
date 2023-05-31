@@ -17,9 +17,17 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded; // current state whether we are grounded or not
     private Vector3 velocity; // for handling jumping and gravity(velocity.y)
 
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private SelectionManager selectionManager;
+    private Inventory inventory;
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+
+        inventory = new Inventory();
+        inventoryUI.SetInventory(inventory); // here we get the reference inventory
+        selectionManager.SetInventory(inventory); // here we get the reference inventory
     }
 
     private void Update()
